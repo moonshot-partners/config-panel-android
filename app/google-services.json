@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "225592495982",
+    "project_id": "configpaneltest",
+    "storage_bucket": "configpaneltest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225592495982:android:03887fda46502e48b87b7f",
+        "android_client_info": {
+          "package_name": "partners.moonshot.configpanel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225592495982-hi6a9ft03idcon71q85gp77hps5kcrtq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZCpRPqD2LLBh2cj_g5ZRsYSXnsuqSP7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225592495982-hi6a9ft03idcon71q85gp77hps5kcrtq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
