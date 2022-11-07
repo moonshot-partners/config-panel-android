@@ -2,6 +2,7 @@ package partners.moonshot.configpanel.di
 
 import android.content.Context
 import com.google.firebase.FirebaseApp
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import dagger.Module
 import dagger.Provides
@@ -17,11 +18,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ConfigPanelModule {
 
-
     @Provides
     @Singleton
-    fun provideFirebaseManagerRepository(firebaseRemoteConfig: FirebaseRemoteConfig): FirebaseManagerRepository {
-        return FirebaseManagerRepository(firebaseRemoteConfig)
+    fun provideFirebaseManagerRepository(@ApplicationContext context: Context): FirebaseManagerRepository {
+        FirebaseApp.initializeApp(context)
+        return FirebaseManagerRepository(
+            FirebaseRemoteConfig.getInstance(),
+            FirebaseDatabase.getInstance()
+        )
     }
 
     @Provides

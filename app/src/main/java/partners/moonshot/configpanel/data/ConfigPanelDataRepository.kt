@@ -1,5 +1,6 @@
 package partners.moonshot.configpanel.data
 
+import kotlinx.coroutines.flow.Flow
 import partners.moonshot.configpanel.data.firebase.FirebaseManagerRepository
 import partners.moonshot.configpanel.domain.ConfigPanel
 import partners.moonshot.configpanel.domain.ConfigPanelRepository
@@ -9,7 +10,7 @@ class ConfigPanelDataRepository @Inject constructor(
     private val firebaseManagerRepository: FirebaseManagerRepository
 ) : ConfigPanelRepository {
 
-    override suspend fun get(): ConfigPanel {
+    override suspend fun get(): Flow<ConfigPanel> {
         return firebaseManagerRepository.getPanel()
     }
 

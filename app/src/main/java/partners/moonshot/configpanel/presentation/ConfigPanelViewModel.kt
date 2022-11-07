@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import partners.moonshot.configpanel.domain.ConfigPanel
 import partners.moonshot.configpanel.domain.GetConfigPanel
@@ -22,12 +24,23 @@ class ConfigPanelViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            mutableState.value = mutableState.value.copy(isLoading = true)
-            try{
+
+                getConfigPanel()
+                    .collect { configPanel ->
+                        mutableState.value = mutableState.value.copy(
+                            isLoading = false,
+                            configPanel = configPanel,
+                            errorMessage = null
+                        )
+                    }
+            }
+
+            /*mutableState.value = mutableState.value.copy(isLoading = true)
+
                 getConfigPanel.invoke().also { getConfigPanel ->
                     mutableState.value = mutableState.value.copy(
                         isLoading = false,
-                        configPanel = getConfigPanel,
+                        //configPanel = getConfigPanel,
                         errorMessage = null
                     )
                 }
@@ -36,8 +49,7 @@ class ConfigPanelViewModel @Inject constructor(
                     isLoading = false,
                     errorMessage = e.message
                 )
-            }
+            }*/
 
         }
     }
-}

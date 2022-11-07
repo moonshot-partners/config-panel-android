@@ -34,20 +34,17 @@ fun ConfigPanelScreen(
                 item { Text(text = "Show Loading") }
             }
 
-            state.configPanel.configToggles.forEach { configToggle ->
-                item { Text(text = configToggle.name) }
-            }
             with(state.configPanel) {
-                featureToggles.forEach { featureToggle ->
-                    item { Text(text = featureToggle.name) }
+                featureToggles?.forEach { featureToggle ->
+                    item { Text(text = featureToggle.name ?: "") }
                 }
 
-                configToggles.forEach { configToggle ->
-                    item { Text(text = configToggle.name) }
+                configToggles?.forEach { configToggle ->
+                    item { Text(text = configToggle.name ?: "") }
                 }
 
-                konamiCodeKey.forEach { keyEventCode ->
-                    item { Text(text = keyEventCode.name) }
+                konamiKeyCode?.forEach { keyCodeEvent ->
+                    item { Text(text = keyCodeEvent.name) }
                 }
 
             }
@@ -63,7 +60,11 @@ fun ConfigPanelScreen(
         }, state = rememberLazyListState()
     )
 
-    LaunchedEffect(key1 = Unit, block = {
-        konamiKey(state.configPanel.konamiCodeKey)
-    })
+    if (state.configPanel.konamiKeyCode != null) {
+        state.configPanel.konamiKeyCode?.let { listKonamy ->
+            LaunchedEffect(key1 = Unit, block = {
+                konamiKey(listKonamy)
+            })
+        }
+    }
 }
