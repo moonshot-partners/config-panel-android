@@ -25,14 +25,14 @@ class ConfigPanelViewModel @Inject constructor(
     init {
         viewModelScope.launch {
 
-                getConfigPanel()
+                /*getConfigPanel()
                     .collect { configPanel ->
                         mutableState.value = mutableState.value.copy(
                             isLoading = false,
                             configPanel = configPanel,
                             errorMessage = null
                         )
-                    }
+                    }*/
             }
 
             /*mutableState.value = mutableState.value.copy(isLoading = true)

@@ -17,7 +17,8 @@
             android:name=".SampleActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.ConfigPanel">
+            android:theme="@style/Theme.ConfigPanel"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

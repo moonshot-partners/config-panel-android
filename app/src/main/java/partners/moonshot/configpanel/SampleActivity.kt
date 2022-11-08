@@ -6,13 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickComponent
 import partners.moonshot.configpanel.ui.konami.KonamiCodeActivity
-import partners.moonshot.configpanel.ui.screen.ConfigPanelScreen
 import partners.moonshot.configpanel.ui.theme.ConfigPanelTheme
 
 
@@ -33,10 +30,13 @@ class SampleActivity : KonamiCodeActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ConfigPanelScreen(
+                    /*ConfigPanelScreen(
                         modifier = Modifier.fillMaxSize()
                     ) { newCode ->
                         setKonamiKey(newCode)
+                    }*/
+                    JoystickComponent(modifier = Modifier.fillMaxSize()) {
+
                     }
                 }
             }
