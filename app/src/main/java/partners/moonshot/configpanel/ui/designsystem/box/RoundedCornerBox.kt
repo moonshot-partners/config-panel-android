@@ -18,7 +18,7 @@ import partners.moonshot.configpanel.ui.theme.BACKGROUND
 @Composable
 fun RoundedCornerBox(
     modifier: Modifier = Modifier,
-    margin: Dp = dimensionResource(id = R.dimen.medium_margin),
+    margin: Dp = dimensionResource(id = R.dimen.no_dp),
     roundedCornerShape: Dp = dimensionResource(id = R.dimen.corner_shape),
     contentBackground: Color = BACKGROUND,
     contentAlignment: Alignment = Alignment.Center,
@@ -42,7 +42,7 @@ fun RoundedCornerBox(
 @Composable
 fun RoundedBottomCornerBox(
     modifier: Modifier = Modifier,
-    margin: Dp = dimensionResource(id = R.dimen.medium_margin),
+    margin: Dp = dimensionResource(id = R.dimen.no_dp),
     roundedCornerShape: Dp = dimensionResource(id = R.dimen.corner_shape),
     contentBackground: Color = BACKGROUND,
     contentAlignment: Alignment = Alignment.Center,
@@ -66,7 +66,7 @@ fun RoundedBottomCornerBox(
 @Composable
 fun RoundedTopCornerBox(
     modifier: Modifier = Modifier,
-    margin: Dp = dimensionResource(id = R.dimen.medium_margin),
+    margin: Dp = dimensionResource(id = R.dimen.no_dp),
     roundedCornerShape: Dp = dimensionResource(id = R.dimen.corner_shape),
     contentBackground: Color = BACKGROUND,
     contentAlignment: Alignment = Alignment.Center,

@@ -14,17 +14,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.Ro
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,6 +32,8 @@ import partners.moonshot.configpanel.R
 import partners.moonshot.configpanel.ui.designsystem.box.RoundedBottomCornerBox
 import partners.moonshot.configpanel.ui.designsystem.box.RoundedCornerBox
 import partners.moonshot.configpanel.ui.designsystem.box.RoundedTopCornerBox
+import partners.moonshot.configpanel.ui.designsystem.layouts.Frames
+import partners.moonshot.configpanel.ui.designsystem.layouts.addDecoration
 import partners.moonshot.configpanel.ui.theme.BACKGROUND
 import partners.moonshot.configpanel.ui.theme.JOYSTICK_BACKGROUND
 import partners.moonshot.configpanel.ui.theme.JOYSTICK_GRAY
@@ -46,7 +48,7 @@ fun JoystickComponent(
         modifier = modifier
             .fillMaxSize()
             .padding(
-                bottom = dimensionResource(id = R.dimen.medium_margin)
+                all = dimensionResource(id = R.dimen.medium_margin)
             )
             .background(color = BACKGROUND)
     ) {
@@ -58,16 +60,20 @@ fun JoystickComponent(
                 modifier
                     .fillMaxSize()
                     .padding(
-                        top = 48.dp, bottom = 16.dp
+                        top = 48.dp, bottom = 16.dp, start = 16.dp, end = 16.dp
                     ), contentBackground = Color.Black
             ) {
                 Row(modifier = Modifier.fillMaxSize()) {
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .fillMaxHeight()
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        DirectionalButtons()
+                        Row {
+                            DirectionalButtons(modifier = Modifier.size(120.dp))
+                            LargeSpacer()
+                        }
                     }
                     Column(
                         modifier = Modifier
@@ -128,7 +134,10 @@ fun JoystickComponent(
                                 contentBackground = JOYSTICK_LIGTH_GRAY,
                                 margin = dimensionResource(id = R.dimen.smallest_margin)
                             ) {
-                                Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                                Row(
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
                                     RoundedCornerBox(
                                         modifier = Modifier
                                             .weight(1f)
@@ -139,8 +148,7 @@ fun JoystickComponent(
                                     ) {}
                                     MediumSpacer()
                                     RoundedCornerBox(
-
-                                       modifier = Modifier
+                                        modifier = Modifier
                                             .weight(1f)
                                             .height(26.dp),
                                         roundedCornerShape = dimensionResource(id = R.dimen.corner_shape_large),
@@ -162,8 +170,8 @@ fun JoystickComponent(
                             .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        LargeSpacer()
-                        Text(text = "Noentiendo", color = JOYSTICK_RED)
+                        ExtraLargeSpacer()
+                        Text(text = stringResource(id = R.string.no_entiendo), color = JOYSTICK_RED)
                         ExtraLargeSpacer()
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -173,7 +181,7 @@ fun JoystickComponent(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Start
                             ) {
-                                SmallestSpacer()
+                                LargeSpacer()
                                 CircleJoystickButton(value = stringResource(id = R.string.b)) {
                                     onKeyEvent(JoystickKeyEvent.B)
                                 }
@@ -247,10 +255,87 @@ fun SmallestSpacer() {
 }
 
 @Composable
-fun DirectionalButtons() {
-    Column {
-        RoundedCornerBox(modifier = Modifier.size(40.dp), contentBackground = Color.White) {
+fun ColorBox(modifier: Modifier) {
+    Box(
+        Modifier
+            .padding(1.dp)
+            .size(width = 50.dp, height = 10.dp)
+            .then(modifier)
+    )
+}
 
+@Composable
+fun DirectionalButtons(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Column(modifier = modifier) {
+            val borderColor = Color.White
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(1f))
+                RoundedTopCornerBox(
+                    modifier = Modifier
+                        .weight(1f)
+                        .addDecoration(Frames.UpButtonCorners(color = borderColor))
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = null
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            Row(modifier = Modifier.fillMaxWidth()) {
+                RoundedTopCornerBox(
+                    modifier = Modifier
+                        .weight(1f)
+                        .addDecoration(Frames.LeftButtonCorners(color = borderColor)),
+                    contentBackground = Color.White
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = null
+                    )
+                }
+                RoundedTopCornerBox(
+                    modifier = Modifier.weight(1f),
+                    contentBackground = Color.White
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = null
+                    )
+                }
+                RoundedTopCornerBox(
+                    modifier = Modifier
+                        .weight(1f)
+                        .addDecoration(Frames.RightButtonCorners(color = borderColor)),
+                    contentBackground = Color.White
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = null
+                    )
+                }
+            }
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(1f))
+                RoundedBottomCornerBox(
+                    modifier = Modifier
+                        .weight(1f)
+                        .addDecoration(Frames.BottomButtonCorners(color = borderColor)),
+                    contentBackground = Color.White
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = null
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+            }
         }
     }
 }

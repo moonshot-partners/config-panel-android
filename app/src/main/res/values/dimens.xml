@@ -8,8 +8,8 @@
     <dimen name="corner_shape">6dp</dimen>
     <dimen name="corner_shape_large">12dp</dimen>
     <dimen name="no_dp">0dp</dimen>
-    <dimen name="joystick_button_size">78dp</dimen>
-    <dimen name="joystick_button_circle_size">68dp</dimen>
+    <dimen name="joystick_button_size">64dp</dimen>
+    <dimen name="joystick_button_circle_size">60dp</dimen>
     <dimen name="joystick_gray_height">36dp</dimen>
     <dimen name="joystick_gray_small_height">28dp</dimen>
     <dimen name="joystick_white_height">64dp</dimen>
