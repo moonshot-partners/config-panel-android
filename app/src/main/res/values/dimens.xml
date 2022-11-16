@@ -13,4 +13,5 @@
     <dimen name="joystick_gray_height">36dp</dimen>
     <dimen name="joystick_gray_small_height">28dp</dimen>
     <dimen name="joystick_white_height">64dp</dimen>
+    <dimen name="directional_button_size">42dp</dimen>
 </resources>

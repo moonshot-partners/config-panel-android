@@ -14,4 +14,7 @@ class ConfigPanelDataRepository @Inject constructor(
         return firebaseManagerRepository.getPanel()
     }
 
+    override suspend fun getStateFromKeyStore(keyQuery: String): Boolean {
+        return keyQuery == "B,B,A,A"
+    }
 }

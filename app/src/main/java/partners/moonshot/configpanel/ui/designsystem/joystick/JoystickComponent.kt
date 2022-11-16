@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,7 +43,10 @@ import partners.moonshot.configpanel.ui.theme.JOYSTICK_RED
 
 @Composable
 fun JoystickComponent(
-    modifier: Modifier = Modifier, onKeyEvent: (JoystickKeyEvent) -> Unit
+    modifier: Modifier = Modifier,
+    joystickMonitor: String,
+    isSuccessState: Boolean? = null,
+    onKeyEvent: (JoystickKeyEvent) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -71,103 +75,23 @@ fun JoystickComponent(
                         contentAlignment = Alignment.Center
                     ) {
                         Row {
-                            DirectionalButtons(modifier = Modifier.size(120.dp))
+                            DirectionalButtons(modifier = Modifier.size(130.dp)) { joystickKeyEvent ->
+                                onKeyEvent(joystickKeyEvent)
+                            }
                             LargeSpacer()
                         }
                     }
+                    StartAndSelectComponent(Modifier.weight(1f),
+                        isSuccessState,
+                        joystickMonitor,
+                        onSelectClick = {
+                            onKeyEvent(JoystickKeyEvent.SELECT)
+                        },
+                        onStartClick = {
+                            onKeyEvent(JoystickKeyEvent.START)
+                        })
                     Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                    ) {
-                        RoundedBottomCornerBox(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(dimensionResource(id = R.dimen.joystick_gray_height)),
-                            contentBackground = JOYSTICK_GRAY
-                        ) {}
-                        SmallSpacer()
-                        RoundedCornerBox(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(dimensionResource(id = R.dimen.joystick_gray_height)),
-                            contentBackground = JOYSTICK_GRAY
-                        ) {}
-                        SmallSpacer()
-                        RoundedCornerBox(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(dimensionResource(id = R.dimen.joystick_gray_height)),
-                            contentBackground = JOYSTICK_GRAY
-                        ) {
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                Text(
-                                    modifier = Modifier.weight(1f),
-                                    text = stringResource(id = R.string.select),
-                                    color = JOYSTICK_RED,
-                                    textAlign = TextAlign.Center
-                                )
-                                Text(
-                                    modifier = Modifier.weight(1f),
-                                    text = stringResource(id = R.string.start),
-                                    color = JOYSTICK_RED,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
-                        SmallSpacer()
-                        RoundedCornerBox(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(dimensionResource(id = R.dimen.joystick_white_height)),
-                            contentBackground = JOYSTICK_LIGTH_GRAY
-                        ) {
-                            RoundedCornerBox(
-                                modifier = Modifier
-                                    .padding(top = 4.dp, bottom = 4.dp, start = 6.dp, end = 6.dp)
-                                    .border(
-                                        1.dp, color = Color.Black, shape = RoundedCornerShape(
-                                            dimensionResource(id = R.dimen.corner_shape)
-                                        )
-                                    )
-                                    .fillMaxSize(),
-                                contentBackground = JOYSTICK_LIGTH_GRAY,
-                                margin = dimensionResource(id = R.dimen.smallest_margin)
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxSize(),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    RoundedCornerBox(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .height(26.dp),
-                                        roundedCornerShape = dimensionResource(id = R.dimen.corner_shape_large),
-                                        contentBackground = Color.Black,
-                                        margin = dimensionResource(id = R.dimen.smallest_margin)
-                                    ) {}
-                                    MediumSpacer()
-                                    RoundedCornerBox(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .height(26.dp),
-                                        roundedCornerShape = dimensionResource(id = R.dimen.corner_shape_large),
-                                        contentBackground = Color.Black,
-                                        margin = dimensionResource(id = R.dimen.smallest_margin)
-                                    ) {}
-                                }
-                            }
-                        }
-                        SmallSpacer()
-                        RoundedTopCornerBox(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            contentBackground = JOYSTICK_GRAY
-                        ) {}
-                    }
-                    Column(
-                        modifier = Modifier
-                            .weight(1f),
+                        modifier = Modifier.weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         ExtraLargeSpacer()
@@ -187,8 +111,7 @@ fun JoystickComponent(
                                 }
                                 SmallSpacer()
                                 CircleJoystickButton(
-                                    color = JOYSTICK_RED,
-                                    value = stringResource(id = R.string.a)
+                                    color = JOYSTICK_RED, value = stringResource(id = R.string.a)
                                 ) {
                                     onKeyEvent(JoystickKeyEvent.A)
                                 }
@@ -203,11 +126,115 @@ fun JoystickComponent(
 }
 
 @Composable
-fun CircleJoystickButton(
+fun StartAndSelectComponent(
     modifier: Modifier = Modifier,
-    color: Color = JOYSTICK_RED,
-    value: String,
-    onClick: () -> Unit
+    isSuccessState: Boolean?,
+    joystickMonitor: String,
+    onStartClick: () -> Unit,
+    onSelectClick: () -> Unit
+) {
+    Column(
+        modifier = modifier.fillMaxHeight()
+    ) {
+        RoundedBottomCornerBox(modifier = Modifier
+            .fillMaxWidth()
+            .height(dimensionResource(id = R.dimen.joystick_gray_height)),
+            contentBackground = JOYSTICK_GRAY,
+            content = {
+                val color =
+                    if (isSuccessState == null) JOYSTICK_GRAY else if (isSuccessState) Color.Green else Color.Red
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_center), contentDescription = null, tint = color
+                )
+            })
+        SmallSpacer()
+        RoundedCornerBox(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(dimensionResource(id = R.dimen.joystick_gray_height)),
+            contentBackground = JOYSTICK_GRAY
+        ) {
+            Text(text = joystickMonitor)
+        }
+        SmallSpacer()
+        RoundedCornerBox(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(dimensionResource(id = R.dimen.joystick_gray_height)),
+            contentBackground = JOYSTICK_GRAY
+        ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(id = R.string.select),
+                    color = JOYSTICK_RED,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(id = R.string.start),
+                    color = JOYSTICK_RED,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        SmallSpacer()
+        RoundedCornerBox(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(dimensionResource(id = R.dimen.joystick_white_height)),
+            contentBackground = JOYSTICK_LIGTH_GRAY
+        ) {
+            RoundedCornerBox(
+                modifier = Modifier
+                    .padding(
+                        top = 4.dp, bottom = 4.dp, start = 6.dp, end = 6.dp
+                    )
+                    .border(
+                        1.dp, color = Color.Black, shape = RoundedCornerShape(
+                            dimensionResource(id = R.dimen.corner_shape)
+                        )
+                    )
+                    .fillMaxSize(),
+                contentBackground = JOYSTICK_LIGTH_GRAY,
+                margin = dimensionResource(id = R.dimen.smallest_margin)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RoundedCornerBox(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(26.dp)
+                            .clickable(onClick = onSelectClick),
+                        roundedCornerShape = dimensionResource(id = R.dimen.corner_shape_large),
+                        contentBackground = Color.Black,
+                        margin = dimensionResource(id = R.dimen.smallest_margin)
+                    ) {}
+                    MediumSpacer()
+                    RoundedCornerBox(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(26.dp)
+                            .clickable(onClick = onStartClick),
+                        roundedCornerShape = dimensionResource(id = R.dimen.corner_shape_large),
+                        contentBackground = Color.Black,
+                        margin = dimensionResource(id = R.dimen.smallest_margin)
+                    ) {}
+                }
+            }
+        }
+        SmallSpacer()
+        RoundedTopCornerBox(
+            modifier = Modifier.fillMaxSize(), contentBackground = JOYSTICK_GRAY
+        ) {}
+    }
+}
+
+@Composable
+fun CircleJoystickButton(
+    modifier: Modifier = Modifier, color: Color = JOYSTICK_RED, value: String, onClick: () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.End) {
         RoundedCornerBox(
@@ -265,11 +292,9 @@ fun ColorBox(modifier: Modifier) {
 }
 
 @Composable
-fun DirectionalButtons(modifier: Modifier) {
+fun DirectionalButtons(modifier: Modifier, onKeyEvent: (JoystickKeyEvent) -> Unit) {
     Box(
-        modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
 
         Column(modifier = modifier) {
@@ -281,10 +306,16 @@ fun DirectionalButtons(modifier: Modifier) {
                         .weight(1f)
                         .addDecoration(Frames.UpButtonCorners(color = borderColor))
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = null
-                    )
+                    IconButton(modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.directional_button_size))
+                        .background(color = Color.Black),
+                        onClick = { onKeyEvent(JoystickKeyEvent.UP) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_up),
+                            tint = Color.White,
+                            contentDescription = null
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.weight(1f))
             }
@@ -295,19 +326,30 @@ fun DirectionalButtons(modifier: Modifier) {
                         .addDecoration(Frames.LeftButtonCorners(color = borderColor)),
                     contentBackground = Color.White
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = null
-                    )
+                    IconButton(modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.directional_button_size))
+                        .background(color = Color.Black),
+                        onClick = { onKeyEvent(JoystickKeyEvent.LEFT) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_left),
+                            tint = Color.White,
+                            contentDescription = null
+                        )
+                    }
                 }
                 RoundedTopCornerBox(
-                    modifier = Modifier.weight(1f),
-                    contentBackground = Color.White
+                    modifier = Modifier.weight(1f), contentBackground = Color.White
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = null
-                    )
+                    IconButton(modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.directional_button_size))
+                        .background(color = Color.Black), onClick = { }) {
+                        Icon(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_center),
+                            tint = Color.White,
+                            contentDescription = null
+                        )
+                    }
                 }
                 RoundedTopCornerBox(
                     modifier = Modifier
@@ -315,10 +357,16 @@ fun DirectionalButtons(modifier: Modifier) {
                         .addDecoration(Frames.RightButtonCorners(color = borderColor)),
                     contentBackground = Color.White
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = null
-                    )
+                    IconButton(modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.directional_button_size))
+                        .background(color = Color.Black),
+                        onClick = { onKeyEvent(JoystickKeyEvent.RIGTH) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_right),
+                            tint = Color.White,
+                            contentDescription = null
+                        )
+                    }
                 }
             }
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -329,10 +377,16 @@ fun DirectionalButtons(modifier: Modifier) {
                         .addDecoration(Frames.BottomButtonCorners(color = borderColor)),
                     contentBackground = Color.White
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
-                        contentDescription = null
-                    )
+                    IconButton(modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.directional_button_size))
+                        .background(color = Color.Black),
+                        onClick = { onKeyEvent(JoystickKeyEvent.DOWN) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_down),
+                            tint = Color.White,
+                            contentDescription = null
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.weight(1f))
             }

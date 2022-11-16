@@ -14,12 +14,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import partners.moonshot.configpanel.presentation.ConfigPanelViewModel
+import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickViewModel
 import partners.moonshot.configpanel.ui.konami.KeyEventCode
 
 @Composable
 fun ConfigPanelScreen(
     modifier: Modifier = Modifier,
     configPanelViewModel: ConfigPanelViewModel = hiltViewModel(),
+    joystickViewModel: JoystickViewModel = hiltViewModel(),
     konamiKey: (List<KeyEventCode>) -> Unit
 ) {
     var message by remember {
