@@ -21,6 +21,10 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        var cpModeLazy = project.findProperty('config.panel.mode.lazy') ?: false
+        var cpEnabled = project.findProperty('config.panel.enabled') ?: false
+        buildConfigField "boolean", 'IS_CP_MODE_LAZY', "$cpModeLazy"
+        buildConfigField "boolean", 'IS_CP_ENABLED', "$cpEnabled"
     }
 
     buildTypes {

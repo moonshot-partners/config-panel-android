@@ -19,7 +19,10 @@ class JoystickActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ConfigPanelTheme {
-               JoystickScreen()
+                JoystickScreen {
+                    finish()
+                    // TODO open PanelConfig
+                }
             }
         }
     }

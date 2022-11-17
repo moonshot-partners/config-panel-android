@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,11 +30,7 @@ class SampleActivity : KonamiCodeActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ConfigPanelTheme {
-                ConfigPanelScreen(
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    setKonamiKey(it)
-                }
+                Text("Hello World")
             }
         }
     }

@@ -360,7 +360,7 @@ fun DirectionalButtons(modifier: Modifier, onKeyEvent: (JoystickKeyEvent) -> Uni
                     IconButton(modifier = Modifier
                         .size(dimensionResource(id = R.dimen.directional_button_size))
                         .background(color = Color.Black),
-                        onClick = { onKeyEvent(JoystickKeyEvent.RIGTH) }) {
+                        onClick = { onKeyEvent(JoystickKeyEvent.RIGHT) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_arrow_right),
                             tint = Color.White,
@@ -395,5 +395,5 @@ fun DirectionalButtons(modifier: Modifier, onKeyEvent: (JoystickKeyEvent) -> Uni
 }
 
 enum class JoystickKeyEvent {
-    UP, DOWN, LEFT, RIGTH, A, B, START, SELECT
+    UP, DOWN, LEFT, RIGHT, A, B, START, SELECT
 }

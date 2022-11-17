@@ -36,6 +36,7 @@ class FirebaseManagerRepository @Inject constructor(
 
             myRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // TODO SACAR EL ERROR DE FIREBASE
                     val remoteConfigPanel = getRemoteConfigPanelFromDatabase(dataSnapshot)
                     remoteConfigPanel?.let { newConfigPanel ->
                         configPanel = newConfigPanel
