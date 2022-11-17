@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,45 +29,39 @@ fun ConfigPanelScreen(
         mutableStateOf("")
     }
 
-    val state by configPanelViewModel.state().collectAsState()
+    val state by configPanelViewModel.state().observeAsState()
 
     LazyColumn(
         modifier = modifier.fillMaxSize(), content = {
-            if (state.isLoading) {
-                item { Text(text = "Show Loading") }
-            }
-
-            with(state.configPanel) {
-                featureToggles?.forEach { featureToggle ->
-                    item { Text(text = featureToggle.name ?: "") }
+            state?.let { safePanelState ->
+                with(safePanelState.configPanel) {
+                    featureToggles?.forEach { featureToggle ->
+                        item { Text(text = featureToggle.name ?: "") }
+                    }
+                    configToggles?.forEach { configToggle ->
+                        item { Text(text = configToggle.name ?: "") }
+                    }
+                    konamiKeyCode?.forEach { keyCodeEvent ->
+                        item { Text(text = keyCodeEvent.name) }
+                    }
                 }
 
-                configToggles?.forEach { configToggle ->
-                    item { Text(text = configToggle.name ?: "") }
+                if (safePanelState.error != null) {
+                    safePanelState.error.let { safeMessage ->
+                        message = safeMessage.name
+                    }
+                } else {
+                    item { Text(text = message) }
                 }
 
-                konamiKeyCode?.forEach { keyCodeEvent ->
-                    item { Text(text = keyCodeEvent.name) }
+                if (safePanelState.configPanel.konamiKeyCode != null) {
+                    safePanelState.configPanel.konamiKeyCode.let { listKonamy ->
+                        konamiKey(listKonamy)
+                    }
                 }
-
-            }
-
-            if (state.errorMessage != message) {
-                state.errorMessage?.let { safeMessage ->
-                    message = safeMessage
-                }
-            } else {
-                item { Text(text = message) }
-                // TODO validar si es necesario marcar en viewModel que no muestre mas el mensaje
             }
         }, state = rememberLazyListState()
     )
 
-    if (state.configPanel.konamiKeyCode != null) {
-        state.configPanel.konamiKeyCode?.let { listKonamy ->
-            LaunchedEffect(key1 = Unit, block = {
-                konamiKey(listKonamy)
-            })
-        }
-    }
+
 }

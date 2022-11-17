@@ -10,11 +10,15 @@ class ConfigPanelDataRepository @Inject constructor(
     private val firebaseManagerRepository: FirebaseManagerRepository
 ) : ConfigPanelRepository {
 
-    override suspend fun get(): Flow<ConfigPanel> {
+    override fun get(): ConfigPanel {
         return firebaseManagerRepository.getPanel()
     }
 
-    override suspend fun getStateFromKeyStore(keyQuery: String): Boolean {
+    override fun getStateFromKeyStore(keyQuery: String): Boolean {
+        // TODO implementar Flow para esto
+        /*configPanelFlow.collect {
+            return keyQuery == "B,B,A,A"
+        }*/
         return keyQuery == "B,B,A,A"
     }
 }

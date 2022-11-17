@@ -1,10 +1,12 @@
 package partners.moonshot.configpanel.ui.konami
 
+import android.content.Intent
 import android.os.SystemClock
 import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import partners.moonshot.configpanel.BuildConfig
+import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickActivity
 
 abstract class KonamiCodeActivity : ComponentActivity() {
     private val konamiCodeChecker = KonamiCodeChecker()
@@ -35,5 +37,7 @@ abstract class KonamiCodeActivity : ComponentActivity() {
         konamiCodeChecker.setKonamiCode(code = code)
     }
 
-    abstract fun launchSecretScreen()
+    private fun launchSecretScreen() {
+        startActivity(Intent(this, JoystickActivity::class.java))
+    }
 }

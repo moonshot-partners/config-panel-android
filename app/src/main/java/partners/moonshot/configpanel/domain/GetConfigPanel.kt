@@ -5,5 +5,5 @@ import javax.inject.Inject
 class GetConfigPanel @Inject constructor(
     private val configPanelRepository: ConfigPanelRepository
 ) {
-    suspend operator fun invoke() = configPanelRepository.get()
+    operator fun invoke() = configPanelRepository.get()
 }

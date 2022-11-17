@@ -18,37 +18,22 @@ import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickKeyEvent
 import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickKeyEvent.START
 import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickScreen
 import partners.moonshot.configpanel.ui.konami.KonamiCodeActivity
+import partners.moonshot.configpanel.ui.screen.ConfigPanelScreen
 import partners.moonshot.configpanel.ui.theme.ConfigPanelTheme
 
 
 @AndroidEntryPoint
 class SampleActivity : KonamiCodeActivity() {
 
-
-    override fun launchSecretScreen() {
-        Toast.makeText(this, "Konami OK", Toast.LENGTH_LONG).show()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ConfigPanelTheme {
-                // A surface container using the 'background' color from the theme
-                /*Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    var keyValue by remember {
-                        mutableStateOf("")
-                    }
-                    JoystickComponent(
-                        modifier = Modifier.fillMaxSize(),
-                        joystickMonitor = keyValue
-                    ) {
-                        keyValue = it.name
-                    }
-                }*/
-                JoystickScreen()
+                ConfigPanelScreen(
+                    modifier = Modifier.fillMaxSize()
+                ){
+                    setKonamiKey(it)
+                }
             }
         }
     }

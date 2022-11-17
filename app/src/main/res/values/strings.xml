@@ -5,4 +5,5 @@
     <string name="select">SELECT</string>
     <string name="start">START</string>
     <string name="no_entiendo">Noentiendo</string>
+    <string name="title_activity_joystick">JoystickActivity</string>
 </resources>
