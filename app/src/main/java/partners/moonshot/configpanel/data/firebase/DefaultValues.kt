@@ -4,7 +4,6 @@ import partners.moonshot.configpanel.BuildConfig.VERSION_NAME
 import partners.moonshot.configpanel.domain.ConfigPanel
 import partners.moonshot.configpanel.domain.ConfigToggle
 import partners.moonshot.configpanel.domain.Toggle
-import partners.moonshot.configpanel.ui.konami.getDefaultKonamiKey
 
 object DefaultValues {
 
@@ -13,8 +12,7 @@ object DefaultValues {
             name = "Config Panel",
             version = VERSION_NAME,
             configToggles = getDefaultConfigToggles(),
-            featureToggles = getDefaultFeaturesToggles(),
-            konamiKeyCode = getDefaultKonamiKey()
+            featureToggles = getDefaultFeaturesToggles()
         )
     }
 

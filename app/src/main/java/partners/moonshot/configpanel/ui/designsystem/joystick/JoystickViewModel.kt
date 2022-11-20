@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import partners.moonshot.configpanel.domain.ConfigPanelRepository
+import partners.moonshot.configpanel.domain.FetchConfigPanel
 import partners.moonshot.configpanel.domain.GetConfigPanel
 import javax.inject.Inject
 
@@ -33,6 +34,7 @@ class IsValidJoystickKey @Inject constructor(
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class JoystickViewModel @Inject constructor(
+    private val fetchConfigPanel: FetchConfigPanel,
     private val isValidJoystickKey: IsValidJoystickKey
 ) : ViewModel() {
 
@@ -45,6 +47,7 @@ class JoystickViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            fetchConfigPanel()
             textSearch.debounce(delayDebounce).collect { query ->
                 if (query.isNotBlank()) {
                     mutableState.value =

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import partners.moonshot.configpanel.BuildConfig
 import partners.moonshot.configpanel.data.firebase.DatabaseKeyNames.ROOT_DATABASE
+import partners.moonshot.configpanel.data.preferences.KeyCodePreferences
 import partners.moonshot.configpanel.domain.ConfigPanel
 import partners.moonshot.configpanel.domain.ConfigToggle
 import partners.moonshot.configpanel.domain.Key
@@ -21,25 +22,27 @@ import javax.inject.Inject
 
 
 class FirebaseManagerRepository @Inject constructor(
-    private val firebaseRemoteConfig: FirebaseRemoteConfig,
-    private val firebaseDatabase: FirebaseDatabase
+    private val firebaseDatabase: FirebaseDatabase,
+    private val keyCodePreferences: KeyCodePreferences,
 ) {
-    private lateinit var database: DatabaseReference
+    private var configPanel = DefaultValues.getDefaultConfigPanel()
+    init {
+        fetch()
+    }
 
-    private val defaultConfigPanel = DefaultValues.getDefaultConfigPanel()
-
-    fun getPanel(): ConfigPanel {
-
+    fun fetch() {
         val myRef = firebaseDatabase.getReference(ROOT_DATABASE)
-        var configPanel = defaultConfigPanel
         try {
-
             myRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    // TODO SACAR EL ERROR DE FIREBASE
                     val remoteConfigPanel = getRemoteConfigPanelFromDatabase(dataSnapshot)
                     remoteConfigPanel?.let { newConfigPanel ->
-                        configPanel = newConfigPanel
+                        configPanel = newConfigPanel.also { configPanel ->
+                            keyCodePreferences.saveKey(
+                                configPanel.konamiKeyCode,
+                                configPanel.joystickKeyCode
+                            )
+                        }
                     }
                 }
 
@@ -47,17 +50,14 @@ class FirebaseManagerRepository @Inject constructor(
                     throw RuntimeException("Firebase Remote Database not Work! Error: $error")
                 }
             })
-
-            return configPanel
         } catch (e: Throwable) {
             throw RuntimeException("Error in getPanel : ${e.message}")
         }
-
     }
 
-    private val configs = "configs"
-    private val features = "features"
-    private val konami = "konami"
+    fun getPanel(): ConfigPanel {
+        return configPanel
+    }
 
     fun getRemoteConfigPanelFromDatabase(dataSnapshot: DataSnapshot): ConfigPanel? {
         return dataSnapshot.getValue(ConfigPanel::class.java)

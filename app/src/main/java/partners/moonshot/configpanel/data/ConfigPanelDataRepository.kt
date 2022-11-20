@@ -8,31 +8,34 @@ import partners.moonshot.configpanel.domain.ConfigPanelRepository
 import javax.inject.Inject
 
 class ConfigPanelDataRepository @Inject constructor(
-    private val keyCodePreferences: KeyCodePreferences,
     private val firebaseManagerRepository: FirebaseManagerRepository
 ) : ConfigPanelRepository {
 
-    private var isConfigPanelCalled = false
+    private lateinit var configPanel : ConfigPanel
+    init{
+        get()
+    }
 
     override fun get(): ConfigPanel {
-        isConfigPanelCalled = true
-        return firebaseManagerRepository.getPanel().also { configPanel ->
-            keyCodePreferences.saveKey(configPanel.konamiKeyCode, configPanel.joystickKeyCode)
-        }
+        configPanel = firebaseManagerRepository.getPanel()
+        return configPanel
     }
 
     override fun isValidVolumenKey(keyQuery: String): Boolean {
-        if(BuildConfig.IS_CP_ENABLED && isConfigPanelCalled.not() && BuildConfig.IS_CP_MODE_LAZY){
+        if (BuildConfig.IS_CP_ENABLED && BuildConfig.IS_CP_MODE_LAZY) {
             get()
         }
-        return keyQuery == keyCodePreferences.getSoundKey()
+        return keyQuery == configPanel.konamiKeyCode
     }
 
     override fun isValidJoystickKey(keyQuery: String): Boolean {
-        if(isConfigPanelCalled.not()){
+        if (BuildConfig.IS_CP_ENABLED) {
             get()
         }
-        return keyQuery == keyCodePreferences.getJoistickKey()
+        return keyQuery == configPanel.joystickKeyCode
     }
 
+    override fun fetch() {
+        firebaseManagerRepository.getPanel()
+    }
 }

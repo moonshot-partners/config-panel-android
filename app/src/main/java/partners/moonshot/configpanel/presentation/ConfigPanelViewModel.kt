@@ -13,11 +13,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import partners.moonshot.configpanel.core.domain.getCustomError
 import partners.moonshot.configpanel.domain.ConfigPanel
+import partners.moonshot.configpanel.domain.FetchConfigPanel
 import partners.moonshot.configpanel.domain.GetConfigPanel
 import javax.inject.Inject
 
 @HiltViewModel
 class ConfigPanelViewModel @Inject constructor(
+    private val fetchConfigPanel: FetchConfigPanel,
     private val getConfigPanel: GetConfigPanel
 ) : ViewModel() {
 
@@ -29,6 +31,7 @@ class ConfigPanelViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             try {
+                fetchConfigPanel()
                 configLiveData.value = ConfigPanelState(
                     isLoading = false,
                     configPanel = getConfigPanel()

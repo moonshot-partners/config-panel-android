@@ -1,7 +1,10 @@
 package partners.moonshot.configpanel.ui.konami
 
-class KonamiCodeChecker(
-    private var konamiCodeKey: List<KeyEventCode> = getDefaultKonamiKey()
+import partners.moonshot.configpanel.data.preferences.KeyCodePreferences
+import javax.inject.Inject
+
+class KonamiCodeChecker @Inject constructor(
+    private val keyCodePreferences: KeyCodePreferences
 ) {
 
     private val DELAY_IN_SECONDS = 3000
@@ -17,7 +20,7 @@ class KonamiCodeChecker(
 
     fun isKonamiCodeValid(): Boolean {
         val accumulatedValue = accumulated.map { it.keyCode }
-        return accumulatedValue.toString() == konamiCodeKey.toString()
+        return accumulatedValue.toFormatKey() == keyCodePreferences.getSoundKey()
     }
 
     fun resetAccumulatedCode() {
@@ -30,19 +33,6 @@ class KonamiCodeChecker(
         return timeElapsed < DELAY_IN_SECONDS
     }
 
-    fun setKonamiCode(code: List<KeyEventCode>){
-        this.konamiCodeKey = code
-    }
-
-}
-
-fun getDefaultKonamiKey(): List<KeyEventCode> {
-    return ArrayList<KeyEventCode>().apply {
-        add(KeyEventCode.UP)
-        add(KeyEventCode.UP)
-        add(KeyEventCode.DOWN)
-        add(KeyEventCode.DOWN)
-    }
 }
 
 data class KeyCodeData(
@@ -51,4 +41,8 @@ data class KeyCodeData(
 
 enum class KeyEventCode {
     UP, DOWN, NOT_FOUND
+}
+
+private fun List<KeyEventCode>.toFormatKey(): String {
+    return this.toString().replace("[", "").replace("]", "").replace(" ", "")
 }

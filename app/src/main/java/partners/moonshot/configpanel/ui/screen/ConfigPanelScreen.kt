@@ -23,7 +23,7 @@ fun ConfigPanelScreen(
     modifier: Modifier = Modifier,
     configPanelViewModel: ConfigPanelViewModel = hiltViewModel(),
     joystickViewModel: JoystickViewModel = hiltViewModel(),
-    konamiKey: (List<KeyEventCode>) -> Unit
+    konamiKey: (String) -> Unit
 ) {
     var message by remember {
         mutableStateOf("")
@@ -41,9 +41,11 @@ fun ConfigPanelScreen(
                     configToggles?.forEach { configToggle ->
                         item { Text(text = configToggle.name ?: "") }
                     }
-                    konamiKeyCode?.forEach { keyCodeEvent ->
-                        item { Text(text = keyCodeEvent.name) }
-                    }
+
+                    item { Text(text = konamiKeyCode) }
+                    
+                    item { Text(text = joystickKeyCode) }
+
                 }
 
                 if (safePanelState.error != null) {
@@ -54,7 +56,7 @@ fun ConfigPanelScreen(
                     item { Text(text = message) }
                 }
 
-                if (safePanelState.configPanel.konamiKeyCode != null) {
+                if (safePanelState.configPanel.konamiKeyCode.isNotEmpty()) {
                     safePanelState.configPanel.konamiKeyCode.let { listKonamy ->
                         konamiKey(listKonamy)
                     }

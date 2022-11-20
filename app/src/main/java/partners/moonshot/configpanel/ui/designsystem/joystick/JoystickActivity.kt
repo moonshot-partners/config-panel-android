@@ -1,5 +1,6 @@
 package partners.moonshot.configpanel.ui.designsystem.joystick
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,17 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import partners.moonshot.configpanel.R
+import partners.moonshot.configpanel.core.multimedia.SoundPlayer
 import partners.moonshot.configpanel.ui.designsystem.joystick.ui.theme.ConfigPanelTheme
 
 @AndroidEntryPoint
 class JoystickActivity : ComponentActivity() {
+
+    private lateinit var soundPlayer: SoundPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        soundPlayer = SoundPlayer(this, R.raw.excelent)
         setContent {
             ConfigPanelTheme {
                 JoystickScreen {
-                    finish()
-                    // TODO open PanelConfig
+                    soundPlayer.play()
                 }
             }
         }

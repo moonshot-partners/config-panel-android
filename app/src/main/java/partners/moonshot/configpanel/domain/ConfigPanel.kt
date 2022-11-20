@@ -8,12 +8,12 @@ data class ConfigPanel(
     val name: String? = "",
     val configToggles: List<ConfigToggle>? = emptyList(),
     val featureToggles: List<Toggle>? = emptyList(),
-    val joystickKeyCode: List<JoystickKeyEvent>? = emptyList(),
-    val konamiKeyCode: List<KeyEventCode>? = emptyList()
+    val joystickKeyCode: String = "",
+    val konamiKeyCode: String = ""
 ) {
     companion object {
         fun empty(): ConfigPanel {
-            return ConfigPanel("", "", emptyList(), emptyList(), emptyList())
+            return ConfigPanel("", "", emptyList(), emptyList(), "", "")
         }
     }
 }

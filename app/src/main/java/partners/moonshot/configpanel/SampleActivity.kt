@@ -30,7 +30,7 @@ class SampleActivity : KonamiCodeActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ConfigPanelTheme {
-                Text("Hello World")
+                Text("La clave es: Volumen Arriba, Volumen Arriba, Volumen Abajo, Volumen Abajo")
             }
         }
     }
