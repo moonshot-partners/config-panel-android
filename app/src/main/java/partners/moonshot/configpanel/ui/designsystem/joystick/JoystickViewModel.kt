@@ -1,33 +1,41 @@
 package partners.moonshot.configpanel.ui.designsystem.joystick
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import partners.moonshot.configpanel.domain.ConfigPanelRepository
+import partners.moonshot.configpanel.domain.FetchConfigPanel
+import partners.moonshot.configpanel.domain.GetConfigPanel
 import javax.inject.Inject
 
 
-class GetStateByQueryKey @Inject constructor(
+class IsValidSoundKey @Inject constructor(
     private val configPanelRepository: ConfigPanelRepository
 ) {
-    suspend operator fun invoke(key: String): Boolean {
-        return configPanelRepository.getStateFromKeyStore(key)
+    operator fun invoke(key: String): Boolean {
+        return configPanelRepository.isValidVolumenKey(key)
+    }
+}
+
+class IsValidJoystickKey @Inject constructor(
+    private val configPanelRepository: ConfigPanelRepository
+) {
+    operator fun invoke(key: String): Boolean {
+        return configPanelRepository.isValidJoystickKey(key)
     }
 }
 
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class JoystickViewModel @Inject constructor(
-    private val getStateByQueryKey: GetStateByQueryKey
+    private val fetchConfigPanel: FetchConfigPanel,
+    private val isValidJoystickKey: IsValidJoystickKey
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow(JoystickState())
@@ -39,11 +47,12 @@ class JoystickViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            fetchConfigPanel()
             textSearch.debounce(delayDebounce).collect { query ->
                 if (query.isNotBlank()) {
                     mutableState.value =
                         mutableState.value.copy(
-                            successState = getStateByQueryKey(query),
+                            successState = isValidJoystickKey(query),
                             joystickMonitor = query
                         )
                     mutableTextSearch.value = ""

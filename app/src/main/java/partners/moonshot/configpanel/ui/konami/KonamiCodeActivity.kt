@@ -1,13 +1,30 @@
 package partners.moonshot.configpanel.ui.konami
 
+import android.content.Intent
+import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
+import dagger.hilt.android.AndroidEntryPoint
 import partners.moonshot.configpanel.BuildConfig
+import partners.moonshot.configpanel.R
+import partners.moonshot.configpanel.core.multimedia.SoundPlayer
+import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickActivity
+import javax.inject.Inject
 
-abstract class KonamiCodeActivity : ComponentActivity() {
-    private val konamiCodeChecker = KonamiCodeChecker()
+@AndroidEntryPoint
+open class KonamiCodeActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var konamiCodeChecker: KonamiCodeChecker
+
+    private lateinit var successKey: SoundPlayer
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        successKey = SoundPlayer(this, R.raw.risa)
+    }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let { safeEvent ->
@@ -31,9 +48,8 @@ abstract class KonamiCodeActivity : ComponentActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-    protected fun setKonamiKey(code: List<KeyEventCode>) {
-        konamiCodeChecker.setKonamiCode(code = code)
+    private fun launchSecretScreen() {
+        successKey.play()
+        startActivity(Intent(this, JoystickActivity::class.java))
     }
-
-    abstract fun launchSecretScreen()
 }

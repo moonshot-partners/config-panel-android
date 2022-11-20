@@ -1,5 +1,7 @@
 package partners.moonshot.configpanel.presentation
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,47 +11,39 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import partners.moonshot.configpanel.core.domain.getCustomError
 import partners.moonshot.configpanel.domain.ConfigPanel
+import partners.moonshot.configpanel.domain.FetchConfigPanel
 import partners.moonshot.configpanel.domain.GetConfigPanel
 import javax.inject.Inject
 
 @HiltViewModel
 class ConfigPanelViewModel @Inject constructor(
+    private val fetchConfigPanel: FetchConfigPanel,
     private val getConfigPanel: GetConfigPanel
 ) : ViewModel() {
 
-    private val mutableState = MutableStateFlow(ConfigPanelState())
+    private val configLiveData =
+        MutableLiveData(ConfigPanelState(isLoading = true))
 
-    fun state() = mutableState.asStateFlow()
+    fun state(): LiveData<ConfigPanelState> = configLiveData
 
     init {
         viewModelScope.launch {
-
-                /*getConfigPanel()
-                    .collect { configPanel ->
-                        mutableState.value = mutableState.value.copy(
-                            isLoading = false,
-                            configPanel = configPanel,
-                            errorMessage = null
-                        )
-                    }*/
-            }
-
-            /*mutableState.value = mutableState.value.copy(isLoading = true)
-
-                getConfigPanel.invoke().also { getConfigPanel ->
-                    mutableState.value = mutableState.value.copy(
-                        isLoading = false,
-                        //configPanel = getConfigPanel,
-                        errorMessage = null
-                    )
-                }
-            } catch (e: Exception){
-                mutableState.value = mutableState.value.copy(
+            try {
+                fetchConfigPanel()
+                configLiveData.value = ConfigPanelState(
                     isLoading = false,
-                    errorMessage = e.message
+                    configPanel = getConfigPanel()
                 )
-            }*/
-
+            } catch (e: Exception) {
+                configLiveData.value = ConfigPanelState(
+                    isLoading = false,
+                    error = e.getCustomError()
+                )
+            }
         }
     }
+
+}
+
