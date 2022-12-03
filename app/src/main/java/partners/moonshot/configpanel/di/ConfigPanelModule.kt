@@ -10,7 +10,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import partners.moonshot.configpanel.data.ConfigPanelDataRepository
-import partners.moonshot.configpanel.data.firebase.FirebaseManagerRepository
 import partners.moonshot.configpanel.data.preferences.KeyCodePreferences
 import partners.moonshot.configpanel.domain.ConfigPanelRepository
 import partners.moonshot.configpanel.ui.konami.KonamiCodeChecker
@@ -20,26 +19,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ConfigPanelModule {
 
-
     @Provides
     @Singleton
     fun provideKonamiCodeChequer(
         keyCodePreferences: KeyCodePreferences
     ): KonamiCodeChecker {
         return KonamiCodeChecker(keyCodePreferences)
-    }
-
-    @Provides
-    @Singleton
-    fun provideFirebaseManagerRepository(
-        @ApplicationContext context: Context,
-        keyCodePreferences: KeyCodePreferences
-    ): FirebaseManagerRepository {
-        FirebaseApp.initializeApp(context)
-        return FirebaseManagerRepository(
-            FirebaseDatabase.getInstance(),
-            keyCodePreferences
-        )
     }
 
     @Provides
@@ -58,8 +43,15 @@ class ConfigPanelModule {
     @Provides
     @Singleton
     fun provideConfigPanelRepository(
-        firebaseManagerRepository: FirebaseManagerRepository
+        firebaseDatabase: FirebaseDatabase,
+        keyCodePreferences: KeyCodePreferences
     ): ConfigPanelRepository {
-        return ConfigPanelDataRepository(firebaseManagerRepository)
+        return ConfigPanelDataRepository(firebaseDatabase, keyCodePreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDataBase(): FirebaseDatabase {
+        return FirebaseDatabase.getInstance()
     }
 }

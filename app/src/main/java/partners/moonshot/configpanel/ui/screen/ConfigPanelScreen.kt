@@ -16,8 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import partners.moonshot.configpanel.presentation.ConfigPanelViewModel
-import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickViewModel
-import partners.moonshot.configpanel.ui.konami.KeyEventCode
+import partners.moonshot.configpanel.ui.designsystem.flag.FeatureToggleComponent
 
 @Composable
 fun ConfigPanelScreen(
@@ -36,10 +35,22 @@ fun ConfigPanelScreen(
             state?.let { safePanelState ->
                 with(safePanelState.configPanel) {
                     featureToggles?.forEach { featureToggle ->
-                        item { Text(text = featureToggle.name ?: "") }
+                        item {
+                            FeatureToggleComponent(
+                                name = featureToggle.name ?: "",
+                                isOnFeature = featureToggle.isEnabled ?: false,
+                                onClickComponent = {}
+                            )
+                        }
                     }
                     configToggles?.forEach { configToggle ->
-                        item { Text(text = configToggle.name ?: "") }
+                        item {
+                            FeatureToggleComponent(
+                                name = configToggle.name ?: "",
+                                isOnFeature = configToggle.isEnabled ?: false,
+                                onClickComponent = {}
+                            )
+                        }
                     }
 
                     item { Text(text = konamiKeyCode) }
