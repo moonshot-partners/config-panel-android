@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
+import partners.moonshot.configpanel.ui.designsystem.DesignSystemScreen
 import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickComponent
 import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickKeyEvent
 import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickKeyEvent.START
@@ -31,7 +32,7 @@ class SampleActivity : KonamiCodeActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ConfigPanelTheme {
-                Text("La clave es: Volumen Arriba, Volumen Arriba, Volumen Abajo, Volumen Abajo")
+                DesignSystemScreen()
             }
         }
     }
