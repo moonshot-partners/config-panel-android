@@ -19,6 +19,7 @@ import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickKeyEvent
 import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickKeyEvent.START
 import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickScreen
 import partners.moonshot.configpanel.ui.konami.KonamiCodeActivity
+import partners.moonshot.configpanel.ui.navigation.ConfigPanelNavigation
 import partners.moonshot.configpanel.ui.screen.ConfigPanelScreen
 import partners.moonshot.configpanel.ui.theme.ConfigPanelTheme
 

@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import partners.moonshot.configpanel.BuildConfig
 import partners.moonshot.configpanel.R
 import partners.moonshot.configpanel.core.multimedia.SoundPlayer
-import partners.moonshot.configpanel.ui.designsystem.joystick.JoystickActivity
+import partners.moonshot.configpanel.ConfigPanelActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,6 +50,6 @@ open class KonamiCodeActivity : ComponentActivity() {
 
     private fun launchSecretScreen() {
         successKey.play()
-        startActivity(Intent(this, JoystickActivity::class.java))
+        startActivity(Intent(this, ConfigPanelActivity::class.java))
     }
 }

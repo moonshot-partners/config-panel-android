@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ConfigPanel"
         tools:targetApi="31">
         <activity
-            android:name=".ui.designsystem.joystick.JoystickActivity"
+            android:name=".ConfigPanelActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:label="@string/title_activity_joystick"
