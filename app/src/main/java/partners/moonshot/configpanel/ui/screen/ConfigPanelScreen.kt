@@ -1,5 +1,6 @@
 package partners.moonshot.configpanel.ui.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -22,8 +23,7 @@ import partners.moonshot.configpanel.ui.konami.KeyEventCode
 fun ConfigPanelScreen(
     modifier: Modifier = Modifier,
     configPanelViewModel: ConfigPanelViewModel = hiltViewModel(),
-    joystickViewModel: JoystickViewModel = hiltViewModel(),
-    konamiKey: (String) -> Unit
+    closeConfigPanel: () -> Unit
 ) {
     var message by remember {
         mutableStateOf("")
@@ -57,13 +57,12 @@ fun ConfigPanelScreen(
                 }
 
                 if (safePanelState.configPanel.konamiKeyCode.isNotEmpty()) {
-                    safePanelState.configPanel.konamiKeyCode.let { listKonamy ->
-                        konamiKey(listKonamy)
-                    }
+                    safePanelState.configPanel.konamiKeyCode
                 }
             }
         }, state = rememberLazyListState()
     )
-
-
+    BackHandler {
+        closeConfigPanel()
+    }
 }
